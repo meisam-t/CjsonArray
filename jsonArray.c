@@ -4,18 +4,32 @@
 #include <string.h>
 
 
-int main(void) {
+int main(int argc, char **argv) {
 	//{“serial_number”: “3", “id”: “402", “data”: [“93", “88”, “99", “64”, “81", “f4”, “80", “4d”]} // Json data 
 	char *cjsondata = "{\"serial_number\":\"3\",\"id\":\"402\",\"data\":[\"93\",\"88\",\"99\",\"64\",\"81\",\"f4\",\"80\",\"4d\"]}"; // Cjson Data conversion
 	cJSON *DATA = NULL;
 	cJSON *iterator = NULL;
-	//char *val;
+	
+
 	// Parsing cjson data
 	cJSON *root = cJSON_Parse(cjsondata);  
 	if (!cJSON_IsObject(root)) {
 		return EXIT_FAILURE;
 	}
-
+		/// reading the serial number 
+	//SN = cJSON_GetObjectItem(root, "serial_number");
+	char *SerNo = cJSON_GetObjectItem(root, "serial_number")->valuestring;
+	printf(" ---- serial number is : %s ", SerNo);
+	puts("\n");
+	///
+	/// reading the id 
+	
+	//ID = cJSON_GetObjectItem(root, "id");
+	char *ID = cJSON_GetObjectItem(root, "id")->valuestring;
+	printf(" ---- ID is : %s ", ID);
+	puts("\n");
+	
+	/// 
 	DATA = cJSON_GetObjectItem(root, "data");
 	if (!cJSON_IsArray(DATA)) {
 		cJSON_Delete(root);
@@ -54,6 +68,9 @@ int main(void) {
 		 
 	puts("-------------------");
 	
+	char *out = cJSON_Print(root);
+	puts("000000 ");
+	puts(out);
 	cJSON_Delete(root);
 }
 
